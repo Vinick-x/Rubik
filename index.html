@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rubit</title>
+  <link rel="stylesheet" href="rubit.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div class="wrap-bg">
+  <div id="wrap">
+    <div class="controls">
+      <div class="view">
+        <h3>查看其它视角</h3>
+        <a 
+          href="javascript:;"
+          :style="{
+            backgroundColor: controlBgColor.view0
+          }"
+          @mouseover="behindView()"
+          @mouseleave="leaveBehindView()"
+          >后方视角</a>
+        <a href="javascript:;"
+        :style="{
+          backgroundColor: controlBgColor.view1,
+        }"
+        @mouseover="rightView()"
+        @mouseleave="leaveRightView()"
+        >右方视角</a>
+        <a href="javascript:;"
+        :style="{
+          backgroundColor: controlBgColor.view2
+        }"
+        @mouseover="bottomView()"
+        @mouseleave="leaveBottomView()">底部视角</a>
+      </div>
+      <div class="title">
+        <h3>MagicCube</h3>
+        <a href="javascript:;" class="reset"
+          @click="resetRubit">重置魔方</a>
+          <!-- 无法完成视图更新////////////////////////////////////////////////////////////////// -->
+        <!-- <a href="javascript:;" id="count.num_three">3阶</a>
+        <a href="javascript:;" id="count.num_four">4阶</a>
+        <a href="javascript:;" id="count.num_five">5阶</a> -->
+      </div>
+    </div>
+    <!-- 注意：vue变量的不能使用“-”连接 要使用驼峰格式 -->
+    <div :style="{
+          width: count.num*side+'px',
+          height: count.num*side+'px',
+          transformOrigin: (count.num*side)/2+'px '+(count.num*side)/2+'px -'+(count.num*side)/2+'px',
+          transform: 'rotateX('+contentRotate.x+'deg) rotateY(' + contentRotate.y + 'deg) rotateZ(0deg)'
+        }" class="content">
+      <div v-for="block in blocks" :x="block.x" :y="block.y" :z="block.z" :style="{
+              width: side+'px',
+              height: side+'px',
+              transformOrigin: (count.num*side)/2+'px '+(count.num*side)/2+'px -'+(count.num*side)/2+'px',
+              transform: 'rotateX('+block.rotate.x+'deg) rotateY('+block.rotate.y+'deg)  rotateZ('+block.rotate.z+'deg) translateX('+side*block.x+'px) translateY('+side*block.y+'px) translateZ(-'+side*block.z+'px)',
+              transition: transition + 's' 
+          }" id="block">
+        <p v-for="area in block.areas" :class="area.direct" :style="{
+            transform: area.transform,
+            background: area.color
+          }" @mousedown="down($event, area, block)" 
+          @touchstart="touchStart($event, area, block)"
+          @touchmove="touchMove($event)"></p>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="main.js"></script>
+</body>
+
+</html>
